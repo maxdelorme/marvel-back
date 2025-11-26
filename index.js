@@ -20,10 +20,13 @@ app.get(/proxy\/.*/, async (req, res) => {
       .split("/")
       .filter((item, index) => index !== 1)
       .join("/");
+
+    const hasQueryParameters = path.includes("?");
     const query =
       "https://lereacteur-marvel-api.herokuapp.com" +
       path +
-      `?apiKey=${process.env.MARVEL_API_KEY}`;
+      (hasQueryParameters ? "&" : "?") +
+      `apiKey=${process.env.MARVEL_API_KEY}`;
 
     console.log(query);
     const { data } = await axios.get(query);
